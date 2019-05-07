@@ -1,12 +1,13 @@
 import "phaser";
-import { GameScene } from "GameScene";
+
+import {GameScene} from 'scenes/gameScene' ;
 
 const config: GameConfig = {
-  title: "Starfall",
+  title: "Test Game",
   width: 800,
   height: 600,
   parent: "game",
-  scene: [GameScene],
+  scene:  [GameScene],
   physics: {
     default: "arcade",
     arcade: {
@@ -16,12 +17,14 @@ const config: GameConfig = {
   backgroundColor: "#000033"
 };
 
-export class StarfallGame extends Phaser.Game {
+
+
+export class TestGame extends Phaser.Game {
   constructor(config: GameConfig) {
     super(config);
   }
 }
 
 window.onload = () => {
-  var game = new StarfallGame(config);
+  var game = new TestGame(config);
 };
