@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "baseUrl": "/",
+    "baseUrl": "./src",
     "paths": {
-      "phaser": ["node_modules/phaser3-docs/typescript/phaser.d.ts"]
+      "phaser": ["../node_modules/phaser3-docs/typescript/phaser.d.ts"]
     }
   },
   "include": [
-    "src/*", "src/scenes/gameScene.ts"
+    "**/*"
   ]
 }
