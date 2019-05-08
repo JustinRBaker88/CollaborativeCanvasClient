@@ -1,23 +1,23 @@
 import "phaser";
 
-import {GameScene} from './scenes/GameScene' ;
+import { WelcomeScene } from "./scenes/WelcomeScene";
+import { GameScene } from "./scenes/GameScene";
+import { ScoreScene } from "./scenes/ScoreScene";
 
 const config: GameConfig = {
   title: "Test Game",
   width: 800,
   height: 600,
   parent: "game",
-  scene:  [GameScene],
+  scene:  [WelcomeScene, GameScene, ScoreScene],
   physics: {
     default: "arcade",
     arcade: {
       debug: false
     }
   },
-  backgroundColor: "#000033"
+  backgroundColor: "#18216D"
 };
-
-
 
 export class TestGame extends Phaser.Game {
   constructor(config: GameConfig) {
