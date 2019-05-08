@@ -1,6 +1,6 @@
 import "phaser";
 
-import {GameScene} from 'scenes/gameScene' ;
+import {GameScene} from './scenes/GameScene' ;
 
 const config: GameConfig = {
   title: "Test Game",
