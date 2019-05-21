@@ -1,30 +1,28 @@
 import "phaser";
 
-import { WelcomeScene } from "./scenes/WelcomeScene";
-import { GameScene } from "./scenes/GameScene";
-import { ScoreScene } from "./scenes/ScoreScene";
+import { CanvasScene } from './scenes/canvasScene';
 
 const config: GameConfig = {
-  title: "Test Game",
-  width: 800,
+  title: "Collabortive Canvas",
+  width: 600,
   height: 600,
   parent: "game",
-  scene:  [WelcomeScene, GameScene, ScoreScene],
+  scene:  [CanvasScene],
   physics: {
     default: "arcade",
     arcade: {
       debug: false
     }
   },
-  backgroundColor: "#18216D"
+  backgroundColor: "#D3D3D3"
 };
 
-export class TestGame extends Phaser.Game {
+export class CollaborativeCanvas extends Phaser.Game {
   constructor(config: GameConfig) {
     super(config);
   }
 }
 
 window.onload = () => {
-  var game = new TestGame(config);
+  var game = new CollaborativeCanvas(config);
 };
