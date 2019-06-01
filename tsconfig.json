@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "baseUrl": "./src",
-    "paths": {
-      "phaser": ["../node_modules/phaser3-docs/typescript/phaser.d.ts"]
-    }
+    "baseUrl": "./src"
   },
   "include": [
     "**/*"
