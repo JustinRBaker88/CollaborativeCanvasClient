@@ -1,28 +1,36 @@
 import "phaser";
 
-import { CanvasScene } from './scenes/canvasScene';
+import { Canvas } from './scenes/canvas';
+import { CanvasUI } from './scenes/canvasUI';
 
-const config: GameConfig = {
+console.log("type of Canvas " + typeof(Canvas));
+console.log("type of CanvasUI " + typeof(CanvasUI));
+
+const config: Phaser.Types.Core.GameConfig = {
   title: "Collabortive Canvas",
-  width: 600,
-  height: 600,
+  width: 720,
+  height: 720,
   parent: "game",
-  scene:  [CanvasScene],
-  physics: {
-    default: "arcade",
-    arcade: {
-      debug: false
-    }
-  },
+  //scene: [Canvas, CanvasUI],
+  render: 
+    {
+      pixelArt: true,
+      antialias: false
+    },
+  disableContextMenu: true,
   backgroundColor: "#D3D3D3"
 };
 
 export class CollaborativeCanvas extends Phaser.Game {
-  constructor(config: GameConfig) {
+
+  constructor(config: Phaser.Types.Core.GameConfig ) {
     super(config);
   }
 }
 
 window.onload = () => {
   var game = new CollaborativeCanvas(config);
+  game.scene.add("Canvas", Canvas, false);
+  game.scene.add("CanvasUI", CanvasUI, false);
+  game.scene.start("Canvas");
 };
