@@ -3,15 +3,11 @@ import "phaser";
 import { Canvas } from './scenes/canvas';
 import { CanvasUI } from './scenes/canvasUI';
 
-console.log("type of Canvas " + typeof(Canvas));
-console.log("type of CanvasUI " + typeof(CanvasUI));
-
 const config: Phaser.Types.Core.GameConfig = {
   title: "Collabortive Canvas",
   width: 720,
   height: 720,
   parent: "game",
-  //scene: [Canvas, CanvasUI],
   render: 
     {
       pixelArt: true,
