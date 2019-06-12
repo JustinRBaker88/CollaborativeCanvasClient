@@ -8,13 +8,14 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 720,
   height: 720,
   parent: "game",
+  scene:  [Canvas, CanvasUI],
   render: 
     {
       pixelArt: true,
       antialias: false
     },
   disableContextMenu: true,
-  backgroundColor: "#D3D3D3"
+  backgroundColor: "#FFFFFF"
 };
 
 export class CollaborativeCanvas extends Phaser.Game {
@@ -26,7 +27,7 @@ export class CollaborativeCanvas extends Phaser.Game {
 
 window.onload = () => {
   var game = new CollaborativeCanvas(config);
-  game.scene.add("Canvas", Canvas, false);
-  game.scene.add("CanvasUI", CanvasUI, false);
-  game.scene.start("Canvas");
+  // game.scene.add("Canvas", Canvas, false);
+  // game.scene.add("CanvasUI", CanvasUI, false);
+  // game.scene.start("Canvas");
 };
