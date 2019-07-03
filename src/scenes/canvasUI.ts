@@ -1,6 +1,9 @@
 import "phaser";
+import { Slider } from '../ui/slider';
 
 export class CanvasUI extends Phaser.Scene  {
+
+  slider : Slider;
 
   constructor() {
     super({
@@ -9,6 +12,7 @@ export class CanvasUI extends Phaser.Scene  {
   }
 
   init(): void {
+
   }
 
   preload(): void {
@@ -16,7 +20,9 @@ export class CanvasUI extends Phaser.Scene  {
   }
 
   create(): void {
-    this.add.text(0,0, "Hello World");
+    this.slider = new Slider(this,670,200);
+    this.add.existing(this.slider);    
+    this.slider.setInteractive();
     
   }
 
