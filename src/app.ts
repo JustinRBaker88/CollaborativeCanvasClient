@@ -5,17 +5,23 @@ import { CanvasUI } from './scenes/canvasUI';
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Collabortive Canvas",
-  width: 720,
-  height: 720,
-  parent: "game",
+  type: Phaser.AUTO,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: 'game-container',
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    height: 800,
+    width: 800,
+  },
   scene:  [Canvas, CanvasUI],
   render: 
     {
       pixelArt: true,
       antialias: false
     },
-  disableContextMenu: true,
-  backgroundColor: "#FFFFFF"
+  disableContextMenu: false,
+  backgroundColor: "#FFFFFF",
+  canvasStyle: 'height:95%;',
 };
 
 export class CollaborativeCanvas extends Phaser.Game {
