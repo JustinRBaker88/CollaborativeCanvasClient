@@ -10,8 +10,8 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     parent: 'game-container',
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    height: 800,
-    width: 800,
+    height: window.innerHeight,
+    width: window.innerWidth,
   },
   scene:  [Canvas, CanvasUI],
   render: 
