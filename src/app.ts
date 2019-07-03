@@ -21,7 +21,6 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   disableContextMenu: false,
   backgroundColor: "#FFFFFF",
-  canvasStyle: 'height:95%;',
 };
 
 export class CollaborativeCanvas extends Phaser.Game {
