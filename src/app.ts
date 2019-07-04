@@ -35,7 +35,4 @@ export class CollaborativeCanvas extends Phaser.Game {
 
 window.onload = () => {
   var game = new CollaborativeCanvas(config);
-  // game.scene.add("Canvas", Canvas, false);
-  // game.scene.add("CanvasUI", CanvasUI, false);
-  // game.scene.start("Canvas");
 };
