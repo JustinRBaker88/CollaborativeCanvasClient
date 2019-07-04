@@ -69,6 +69,7 @@ export class Canvas extends Phaser.Scene {
   }
 
   private initCamera() : void {
+    this.mCamera = this.cameras.main;
     CameraUtil.setCameraWidth(this.mCamera,this.CANVASWIDTH);
     this.mCamera.setBounds(0,0,this.CANVASWIDTH + 1,this.CANVASHEIGHT + 1);
     this.mCamera.centerOn(5,5);

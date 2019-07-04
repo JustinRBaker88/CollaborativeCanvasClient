@@ -6,12 +6,15 @@ import { CanvasUI } from './scenes/canvasUI';
 const config: Phaser.Types.Core.GameConfig = {
   title: "Collabortive Canvas",
   type: Phaser.AUTO,
+  dom: {
+    createContainer: true
+  },
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.RESIZE,
     parent: 'game-container',
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    height: window.innerHeight,
     width: window.innerWidth,
+    height: window.innerHeight,
   },
   scene:  [Canvas, CanvasUI],
   render: 
