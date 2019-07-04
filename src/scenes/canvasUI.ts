@@ -20,17 +20,23 @@ export class CanvasUI extends Phaser.Scene  {
   }
 
   create(): void {
-    console.log("Width: " + this.scale.width);
-    console.log("Height: " + this.scale.height);
-    this.slider = new Slider(this,670,200);
-    this.add.existing(this.slider);    
-    this.slider.setInteractive();
+    // this.slider = new Slider(this,670,200);
+    // this.add.existing(this.slider);    
+    // this.slider.setInteractive();
 
     let selector = this.add.dom((.5)*this.scale.width, (.95)*this.scale.height).createFromCache('colorSelector');
     
+    selector.addListener('click');
+
+    selector.on('click', this.colorSelectorEventHandler);
   }
 
   update(time: number, delta: number): void {
-    // console.log('test');
+  }
+
+  colorSelectorEventHandler(event : Event) {
+    let colorSelector = event.target as HTMLDivElement;
+    console.log(colorSelector.style.backgroundColor);
+
   }
 };
