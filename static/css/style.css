@@ -24,8 +24,14 @@ html {
   border: 1px solid black;
   border-radius: 6px;
   cursor: pointer;
-  bottom: 0;
   margin: 3px;
+  position: relative;
+  bottom: 0;
   justify-content: center;
   align-items: center;
+  transition: bottom ease 0.5s;
+}
+
+.color-Selector:hover {
+  bottom: 10px;
 }
