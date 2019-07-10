@@ -2,6 +2,7 @@ import "phaser";
 import { CanvasTile } from '../gameobjects/tile';
 import { CameraUtil } from '../util/cameraUtil';
 import { CameraDragController } from '../controllerobjects/cameraDragController';
+import { CameraZoomController } from '../controllerobjects/cameraZoomController';
 
 export class Canvas extends Phaser.Scene {
 
@@ -9,12 +10,10 @@ export class Canvas extends Phaser.Scene {
   mCamera: Phaser.Cameras.Scene2D.Camera;
 
   cameraDragController : CameraDragController;
+  cameraZoomController : CameraZoomController;
 
   minZoom: number = 5;
   maxZoom: number = 70;
-
-  zoomPercent : number;
-
 
   readonly CANVASWIDTH: number = 100;
   readonly CANVASHEIGHT: number = 100;
@@ -39,7 +38,8 @@ export class Canvas extends Phaser.Scene {
     this.initCanvas();
     this.initEvents();
 
-    this.cameraDragController = new CameraDragController(this.mCamera, this); 
+    this.cameraDragController = new CameraDragController(this.mCamera, this);
+    this.cameraZoomController = new CameraZoomController(this.mCamera, this);
 
   }
 
@@ -64,7 +64,6 @@ export class Canvas extends Phaser.Scene {
 
   private initEvents() : void {
     this.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDownHandler, this);
-    this.input.on(Phaser.Input.Events.POINTER_WHEEL, this.scrollWheelHandler, this);
   }
 
   private initCamera() : void {
@@ -72,9 +71,7 @@ export class Canvas extends Phaser.Scene {
 
     CameraUtil.setCameraWidth(this.mCamera,this.CANVASWIDTH);
     this.mCamera.centerOn(50,50);
-    this.mCamera.setBounds(0, 0, 100,100);
-    this.zoomPercent = this.zoomValueToPercent(this.mCamera.zoom);
-    console.log("Starting percent zoom: " + this.zoomPercent);
+    this.mCamera.setBounds(-100, -100, 400,400);
   }
 
   private pointerDownHandler(pointer : Phaser.Input.Pointer) {
@@ -92,30 +89,5 @@ export class Canvas extends Phaser.Scene {
         }
       }
     }
-  }
-
-  private zoomPercentToValue(percent : number) : number {
-    return this.minZoom * Math.exp(percent*(Math.log(this.maxZoom/this.minZoom)/100));
-  }
-
-  private zoomValueToPercent(zoom : number) : number {
-    return (100*Math.log(zoom/this.minZoom))/Math.log(this.maxZoom/this.minZoom);
-  }
-
-  private scrollWheelHandler(pointer : Phaser.Input.Pointer) {
-    const deltaZoom = Math.abs(pointer.deltaY);
-    let percent = this.zoomValueToPercent(this.mCamera.zoom);
-
-    // mouse wheel down, zoom out
-    if (pointer.deltaY > 0) {
-      percent = Phaser.Math.Clamp(percent - deltaZoom, 0 , 100);
-    }
-    // mouse wheel up, zoom in
-    else if (pointer.deltaY < 0) {
-      percent = Phaser.Math.Clamp(percent + deltaZoom, 0 , 100);
-    }
-
-    this.mCamera.setZoom(this.zoomPercentToValue(percent));
-    this.zoomPercent = percent;
   }
 };
