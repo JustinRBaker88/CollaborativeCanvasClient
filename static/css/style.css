@@ -21,7 +21,7 @@ html {
   display: flex;
   min-width: 32px;
   min-height: 32px;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 6px;
   cursor: pointer;
   margin: 3px;
