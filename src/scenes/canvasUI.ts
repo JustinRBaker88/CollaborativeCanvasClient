@@ -21,7 +21,6 @@ export class CanvasUI extends Phaser.Scene  {
     let selector = this.add.dom((.5)*this.scale.width, (.95)*this.scale.height).createFromCache('colorSelector');
     
     selector.addListener('click');
-
     selector.on('click', this.colorSelectorEventHandler);
   }
 
