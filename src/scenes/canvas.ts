@@ -3,6 +3,8 @@ import { CanvasTile } from '../gameobjects/tile';
 import { CameraUtil } from '../util/cameraUtil';
 import { CameraDragController } from '../controllerobjects/cameraDragController';
 import { CameraZoomController } from '../controllerobjects/cameraZoomController';
+import { SelectionTile } from '../gameobjects/selectionTile';
+import { randomColor } from '../util/Colors';
 
 export class Canvas extends Phaser.Scene {
 
@@ -14,6 +16,8 @@ export class Canvas extends Phaser.Scene {
 
   readonly CANVASWIDTH: number = 100;
   readonly CANVASHEIGHT: number = 100;
+
+  selectionTile : SelectionTile;
 
 
   constructor() {
@@ -39,10 +43,13 @@ export class Canvas extends Phaser.Scene {
 
     this.cameraDragController = new CameraDragController(this.mCamera, this);
     this.cameraZoomController = new CameraZoomController(this.mCamera, this);
+    
+    this.selectionTile = new SelectionTile(this, this.input.activePointer, randomColor());
   }
 
   update(time: number, delta: number): void {
     this.cameraDragController.update(delta);
+    this.selectionTile.update(time, delta);
   }
 
   private initCanvas() {
@@ -61,7 +68,7 @@ export class Canvas extends Phaser.Scene {
   }
 
   private initEvents() : void {
-    this.input.on(Phaser.Input.Events.POINTER_DOWN, this.pointerDownHandler, this);
+    this.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUpHandler, this);
   }
 
   private initCamera() : void {
@@ -71,8 +78,8 @@ export class Canvas extends Phaser.Scene {
     this.mCamera.centerOn(0,0);
   }
 
-  private pointerDownHandler(pointer : Phaser.Input.Pointer) {
-    if (pointer.primaryDown) {
+  private pointerUpHandler(pointer : Phaser.Input.Pointer) {
+    if (pointer.getDuration() < 200) {
 
       let coordinates : Phaser.Math.Vector2 = new Phaser.Math.Vector2(); 
       pointer.positionToCamera(this.mCamera, coordinates);
@@ -82,7 +89,7 @@ export class Canvas extends Phaser.Scene {
       if (x < this.CANVASWIDTH && y < this.CANVASHEIGHT && x >= 0 && y >= 0) {
         let tile = this.canvasGroup[x][y] as CanvasTile;
         if (tile != null) {
-          tile.randomizeColor();
+          tile.setColor(this.selectionTile.getColor());
         }
       }
     }
