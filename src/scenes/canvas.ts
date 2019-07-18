@@ -5,6 +5,7 @@ import { CameraDragController } from '../controllerobjects/cameraDragController'
 import { CameraZoomController } from '../controllerobjects/cameraZoomController';
 import { SelectionTile } from '../gameobjects/selectionTile';
 import { randomColor } from '../util/Colors';
+import { PixelCanvas } from "../gameobjects/pixelCanvas";
 
 export class Canvas extends Phaser.Scene {
 
@@ -18,6 +19,8 @@ export class Canvas extends Phaser.Scene {
   readonly CANVASHEIGHT: number = 100;
 
   selectionTile : SelectionTile;
+
+  pixelCanvas : PixelCanvas;
 
 
   constructor() {
@@ -36,7 +39,8 @@ export class Canvas extends Phaser.Scene {
 
   create(startData: Object ): void {
     
-    
+    this.pixelCanvas = new PixelCanvas(this);
+
     this.initCamera();
     this.initCanvas();
     this.initEvents();
@@ -88,7 +92,7 @@ export class Canvas extends Phaser.Scene {
 
       if (x < this.CANVASWIDTH && y < this.CANVASHEIGHT && x >= 0 && y >= 0) {
         let tile = this.canvasGroup[x][y] as CanvasTile;
-        if (tile != null) {
+        if (tile != null && this.selectionTile.isEnabled()) {
           tile.setColor(this.selectionTile.getColor());
         }
       }

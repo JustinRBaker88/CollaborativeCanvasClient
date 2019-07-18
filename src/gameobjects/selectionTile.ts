@@ -34,6 +34,9 @@ export class SelectionTile {
     this.graphic.visible = enabled;
 
   }
+  public isEnabled() : boolean {
+    return this.graphic.visible;
+  }
 
   public update(time: number, delta: number) {
     if (this.graphic.visible) {
