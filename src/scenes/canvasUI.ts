@@ -1,4 +1,5 @@
 import "phaser";
+import { Canvas } from "./canvas";
 
 export class CanvasUI extends Phaser.Scene  {
 
@@ -21,15 +22,15 @@ export class CanvasUI extends Phaser.Scene  {
     let selector = this.add.dom((.5)*this.scale.width, (.95)*this.scale.height).createFromCache('colorSelector');
     
     selector.addListener('click');
-    selector.on('click', this.colorSelectorEventHandler);
+    selector.on('click', this.colorSelectorEventHandler, this);
   }
 
   update(time: number, delta: number): void {
   }
 
-  colorSelectorEventHandler(event : Event) {
+  private colorSelectorEventHandler(event : Event) {
     let colorSelector = event.target as HTMLDivElement;
-    console.log(colorSelector.style.backgroundColor);
-
+    let canvas : Phaser.Scene = this.game.scene.getScene("Canvas");
+    canvas.events.emit("colorSelected", colorSelector.id);
   }
 };
