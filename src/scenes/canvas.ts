@@ -1,5 +1,4 @@
 import "phaser";
-import { CanvasTile } from '../gameobjects/tile';
 import { CameraUtil } from '../util/cameraUtil';
 import { CameraDragController } from '../controllerobjects/cameraDragController';
 import { CameraZoomController } from '../controllerobjects/cameraZoomController';
@@ -9,18 +8,17 @@ import { PixelCanvas } from "../gameobjects/pixelCanvas";
 
 export class Canvas extends Phaser.Scene {
 
-  canvasGroup: Array<Array<CanvasTile>>;
   mCamera: Phaser.Cameras.Scene2D.Camera;
 
   cameraDragController : CameraDragController;
   cameraZoomController : CameraZoomController;
 
-  readonly CANVASWIDTH: number = 100;
-  readonly CANVASHEIGHT: number = 100;
-
   selectionTile : SelectionTile;
 
   pixelCanvas : PixelCanvas;
+
+  private readonly CANVASWIDTH : number = 1000;
+  private readonly CANVASHEIGHT : number = 1000;
 
 
   constructor() {
@@ -38,64 +36,39 @@ export class Canvas extends Phaser.Scene {
   }
 
   create(startData: Object ): void {
-    
-    this.pixelCanvas = new PixelCanvas(this);
+    this.selectionTile = new SelectionTile(this, this.input.activePointer, randomColor());
+    this.pixelCanvas = new PixelCanvas(this, this.CANVASWIDTH, this.CANVASHEIGHT, this.selectionTile);
 
     this.initCamera();
-    this.initCanvas();
     this.initEvents();
 
     this.cameraDragController = new CameraDragController(this.mCamera, this);
     this.cameraZoomController = new CameraZoomController(this.mCamera, this);
+
+    this.input.keyboard.on('keyup-' + 'SPACE', function (event) { this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2); }, this);
     
-    this.selectionTile = new SelectionTile(this, this.input.activePointer, randomColor());
+
   }
 
   update(time: number, delta: number): void {
     this.cameraDragController.update(delta);
     this.selectionTile.update(time, delta);
+    this.pixelCanvas.update(time,delta);
   }
 
-  private initCanvas() {
-    this.canvasGroup = new Array<Array<CanvasTile>>();
-
-    for (let i = 1; i <= this.CANVASWIDTH; i++) {
-      let row: Array<CanvasTile>  = new Array<CanvasTile>();
-      for (let j = 1; j <= this.CANVASHEIGHT; j++) {
-        let tile = new CanvasTile(this, i, j);
-        this.add.existing(tile);
-        tile.randomizeColor();
-        row.push(tile);
-      }
-      this.canvasGroup.push(row);
-    }
+  public getSelectionTile() : SelectionTile {
+    return this.selectionTile;
   }
 
   private initEvents() : void {
-    this.input.on(Phaser.Input.Events.POINTER_UP, this.pointerUpHandler, this);
+    
   }
 
   private initCamera() : void {
     this.mCamera = this.cameras.main;
 
     CameraUtil.setCameraWidth(this.mCamera,this.CANVASWIDTH);
-    this.mCamera.centerOn(0,0);
+    this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2);
   }
 
-  private pointerUpHandler(pointer : Phaser.Input.Pointer) {
-    if (pointer.getDuration() < 200) {
-
-      let coordinates : Phaser.Math.Vector2 = new Phaser.Math.Vector2(); 
-      pointer.positionToCamera(this.mCamera, coordinates);
-      const x: number = Math.floor(pointer.worldX);
-      const y: number = Math.floor(pointer.worldY);
-
-      if (x < this.CANVASWIDTH && y < this.CANVASHEIGHT && x >= 0 && y >= 0) {
-        let tile = this.canvasGroup[x][y] as CanvasTile;
-        if (tile != null && this.selectionTile.isEnabled()) {
-          tile.setColor(this.selectionTile.getColor());
-        }
-      }
-    }
-  }
 };
