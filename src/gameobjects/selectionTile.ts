@@ -18,6 +18,7 @@ export class SelectionTile {
     this.pointer = pointer;
     
     this.graphic = this.scene.add.graphics();
+    this.graphic.setDepth(100);
     this.initGraphics();
     this.setColor(color);
     this.enableTile(true);
@@ -74,5 +75,12 @@ export class SelectionTile {
 
   public getColor() : number {
     return this.color;
+  }
+
+  public getRGBA() : number {
+    let rgba = this.color;
+    rgba = rgba << 8;
+    rgba = rgba | 0xFF;
+    return rgba;
   }
 };
