@@ -23,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
       antialias: false
     },
   disableContextMenu: false,
-  backgroundColor: "#FFFFFF",
+  backgroundColor: "#C0C0C0",
 };
 
 export class CollaborativeCanvas extends Phaser.Game {
