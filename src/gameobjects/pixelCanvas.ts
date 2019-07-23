@@ -15,11 +15,10 @@ export class PixelCanvas {
 
   private canvasSprite : Phaser.GameObjects.Image;
 
-  private timeSinceCanvasUpdate : number = 0;
   private dirty : boolean = false;
 
-  private canvasWidth : number = 1000;
-  private canvasHeight : number = 1000;
+  private canvasWidth : number;
+  private canvasHeight : number;
 
 
   constructor(scene: Phaser.Scene, width: number, height: number, selectionTile : SelectionTile) {
@@ -43,7 +42,7 @@ export class PixelCanvas {
   }
 
   private initBlankCanvas() {
-    let data = this.imageData;
+    let data : ImageData = this.imageData;
     let view : DataView = new DataView(this.canvasBuffer);
     for (let i = 0; i < data.width; i++) {
       for (let j = 0; j < data.height; j++) {
@@ -78,7 +77,7 @@ export class PixelCanvas {
 
   private pointerUpHandler(pointer : Phaser.Input.Pointer) {
 
-    let camera = this.scene.cameras.main;    
+    let camera : Phaser.Cameras.Scene2D.Camera = this.scene.cameras.main;    
   
     if (pointer.getDuration() < 100) {
 
