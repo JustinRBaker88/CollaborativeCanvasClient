@@ -2,7 +2,7 @@ import "phaser";
 import { SelectionTile } from '../gameobjects/selectionTile';
 import { CollaborativeCanvas } from "../util/enums";
 
-export type CanvasClickConfig = {
+export type CanvasClickEvent = {
   x : number,
   y : number,
   color : number
@@ -30,14 +30,14 @@ export class CanvasClickController {
 
   private pointerUpHandler(pointer : Phaser.Input.Pointer) { 
   
-    if (pointer.getDuration() < 100 && this.selectionTile.isEnabled()) {
+    if (pointer.getDuration() < 75 && this.selectionTile.isEnabled()) {
       
       let camera : Phaser.Cameras.Scene2D.Camera = this.scene.cameras.main;   
       let coordinates : Phaser.Math.Vector2 = new Phaser.Math.Vector2(); 
       pointer.positionToCamera(camera, coordinates);
       const x: number = Math.floor(pointer.worldX);
       const y: number = Math.floor(pointer.worldY);
-      let config : CanvasClickConfig = {x:x, y:y, color:this.selectionTile.getColor()};
+      let config : CanvasClickEvent = {x:x, y:y, color:this.selectionTile.getColor()};
       this.scene.events.emit(CollaborativeCanvas.Events.CANVASCLICKED, config);
 
 
