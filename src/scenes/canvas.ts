@@ -1,21 +1,22 @@
 import "phaser";
-import { CameraUtil } from '../util/cameraUtil';
 import { CameraDragController } from '../controllerobjects/cameraDragController';
 import { CameraZoomController } from '../controllerobjects/cameraZoomController';
 import { SelectionTile } from '../gameobjects/selectionTile';
 import { randomColor } from '../util/Colors';
 import { PixelCanvas } from "../gameobjects/pixelCanvas";
+import { CanvasClickController } from '../controllerobjects/canvasClickController';
 
 export class Canvas extends Phaser.Scene {
 
-  mCamera: Phaser.Cameras.Scene2D.Camera;
+  private mCamera: Phaser.Cameras.Scene2D.Camera;
 
-  cameraDragController : CameraDragController;
-  cameraZoomController : CameraZoomController;
+  private cameraDragController : CameraDragController;
+  private cameraZoomController : CameraZoomController;
+  private canvasClickController : CanvasClickController;
 
-  selectionTile : SelectionTile;
+  private selectionTile : SelectionTile;
 
-  pixelCanvas : PixelCanvas;
+  private pixelCanvas : PixelCanvas;
 
   private readonly CANVASWIDTH : number = 1000;
   private readonly CANVASHEIGHT : number = 1000;
@@ -39,11 +40,13 @@ export class Canvas extends Phaser.Scene {
     this.selectionTile = new SelectionTile(this, this.input.activePointer, randomColor());
     this.pixelCanvas = new PixelCanvas(this, this.CANVASWIDTH, this.CANVASHEIGHT, this.selectionTile);
 
+
     this.initCamera();
     this.initEvents();
 
     this.cameraDragController = new CameraDragController(this.mCamera, this);
     this.cameraZoomController = new CameraZoomController(this.mCamera, this);
+    this.canvasClickController = new CanvasClickController(this, this.selectionTile);
 
     this.input.keyboard.on('keyup-' + 'SPACE', function (event) { this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2); }, this);
     
@@ -66,9 +69,8 @@ export class Canvas extends Phaser.Scene {
 
   private initCamera() : void {
     this.mCamera = this.cameras.main;
-
-    CameraUtil.setCameraWidth(this.mCamera,this.CANVASWIDTH);
     this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2);
+    
   }
 
 };
