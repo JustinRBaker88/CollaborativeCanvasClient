@@ -1,5 +1,6 @@
 import "phaser";
 import { ColorMap } from '../util/Colors';
+import { CollaborativeCanvas } from "../util/enums";
 
 export class SelectionTile {
 
@@ -24,11 +25,16 @@ export class SelectionTile {
     this.enableTile(true);
 
     // event listeners
-    this.scene.events.on("CameraZoomEvent", this.cameraZoomHandler, this);
+    this.scene.events.on(CollaborativeCanvas.Events.CAMERAZOOMED, this.cameraZoomHandler, this);
     this.cancelKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     this.cancelKey.on('up', this.selectionCancelHandler, this);
-    this.scene.events.on("colorSelected", this.colorSelectionHandler, this);
+    this.scene.events.on(CollaborativeCanvas.Events.COLORSELECTED, this.colorSelectionHandler, this);
+    this.scene.events.on(CollaborativeCanvas.Events.CAMERAZOOMED, this.synchToPointer, this);
 
+  }
+
+  private synchToPointer() {
+    this.graphic.setPosition(Math.floor(this.pointer.worldX), Math.floor(this.pointer.worldY));
   }
 
   public enableTile(enabled : boolean) {
@@ -41,7 +47,7 @@ export class SelectionTile {
 
   public update(time: number, delta: number) {
     if (this.graphic.visible) {
-      this.graphic.setPosition(Math.floor(this.pointer.worldX), Math.floor(this.pointer.worldY));
+      this.synchToPointer();
    }
   }
 
@@ -75,12 +81,5 @@ export class SelectionTile {
 
   public getColor() : number {
     return this.color;
-  }
-
-  public getRGBA() : number {
-    let rgba = this.color;
-    rgba = rgba << 8;
-    rgba = rgba | 0xFF;
-    return rgba;
   }
 };

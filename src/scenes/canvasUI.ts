@@ -1,5 +1,5 @@
 import "phaser";
-import { Canvas } from "./canvas";
+import { CollaborativeCanvas } from '../util/enums';
 
 export class CanvasUI extends Phaser.Scene  {
 
@@ -31,6 +31,6 @@ export class CanvasUI extends Phaser.Scene  {
   private colorSelectorEventHandler(event : Event) {
     let colorSelector = event.target as HTMLDivElement;
     let canvas : Phaser.Scene = this.game.scene.getScene("Canvas");
-    canvas.events.emit("colorSelected", colorSelector.id);
+    canvas.events.emit(CollaborativeCanvas.Events.COLORSELECTED, colorSelector.id);
   }
 };

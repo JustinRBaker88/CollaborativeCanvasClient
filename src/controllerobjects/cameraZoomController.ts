@@ -1,10 +1,11 @@
 import "phaser";
+import { CollaborativeCanvas } from '../util/enums';
 
 export class CameraZoomController {
   targetCamera: Phaser.Cameras.Scene2D.Camera;
   scene: Phaser.Scene;
 
-  zoomPercent : number = .2;
+  zoomPercent : number = .1;
 
   minZoom: number = .5;
   maxZoom: number = 100;
@@ -55,6 +56,8 @@ export class CameraZoomController {
 
     this.targetCamera.scrollX -= (pointerPercentX-.5)*(newDisplayWidth - oldDisplayWidth);
     this.targetCamera.scrollY -= (pointerPercentY-.5)*(newDisplayHeight - oldDisplayHeight);
+
+    this.scene.events.emit(CollaborativeCanvas.Events.CAMERAZOOMED);
 
   }
 

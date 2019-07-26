@@ -26,7 +26,7 @@ const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: "#C0C0C0",
 };
 
-export class CollaborativeCanvas extends Phaser.Game {
+export class CollabCanvas extends Phaser.Game {
 
   constructor(config: Phaser.Types.Core.GameConfig ) {
     super(config);
@@ -34,5 +34,5 @@ export class CollaborativeCanvas extends Phaser.Game {
 }
 
 window.onload = () => {
-  var game = new CollaborativeCanvas(config);
+  var game = new CollabCanvas(config);
 };
