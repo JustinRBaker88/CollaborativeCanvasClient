@@ -3,7 +3,10 @@ enum Events {
     CANVASCONSTRUCTED = "CanvasConstructed",
     COLORSELECTED = "ColorSelected",
     CAMERAZOOMED = "CameraZoomed",
-    CANVASREADY = "CanvasReady"
+    CANVASREADY = "CanvasReady",
+    DBREADY = "DBReady",
+    DBUNSUPPORTED = "DBUnsupported",
+    DBFAILED = "DBFailed"
   
 }
 

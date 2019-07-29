@@ -35,7 +35,8 @@ export class PixelCanvas {
     this.imageData = this.canvasSource.imageData;
 
     this.initBlankCanvas();
-    
+    this.canvasSource.putData(this.imageData, 0, 0);
+    this.canvasSource.refresh();
     this.canvasSprite = this.scene.add.image(width/2,height/2,this.key);
     
     this.initEventHandlers();
@@ -49,6 +50,9 @@ export class PixelCanvas {
     this.scene.events.on(CollaborativeCanvas.Events.CANVASCLICKED, this.canvasClickHandler, this);
   }
 
+  private dbLoadFailEventHandler() {
+    this.initBlankCanvas();
+  }
 
   private initBlankCanvas() {
     let data : ImageData = this.imageData;
@@ -59,8 +63,6 @@ export class PixelCanvas {
         view.setInt32(index,0xFFFFFFFF);
       }
     }
-    this.canvasSource.putData(data, 0, 0);
-    this.canvasSource.refresh();
   }
 
   public update(time: number, delta: number) {
