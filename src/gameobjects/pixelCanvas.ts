@@ -26,19 +26,11 @@ export class PixelCanvas {
   constructor(scene: Phaser.Scene, width: number, height: number, selectionTile : SelectionTile) {
     this.scene = scene;
     this.canvasSource = this.scene.textures.createCanvas(this.key, width, height);
-  
+
     this.canvasWidth = width;
     this.canvasHeight = height;
     this.selectionTile = selectionTile;
 
-    this.canvasBuffer = this.canvasSource.buffer;
-    this.imageData = this.canvasSource.imageData;
-
-    this.initBlankCanvas();
-    this.canvasSource.putData(this.imageData, 0, 0);
-    this.canvasSource.refresh();
-    this.canvasSprite = this.scene.add.image(width/2,height/2,this.key);
-    
     this.initEventHandlers();
 
     this.scene.events.emit(CollaborativeCanvas.Events.CANVASREADY);
@@ -48,13 +40,25 @@ export class PixelCanvas {
 
   private initEventHandlers() {
     this.scene.events.on(CollaborativeCanvas.Events.CANVASCLICKED, this.canvasClickHandler, this);
+    this.scene.events.on(CollaborativeCanvas.Events.DBUNSUPPORTED, this.initBlankCanvas, this);
+    this.scene.events.on(CollaborativeCanvas.Events.LOADFAIL, this.initBlankCanvas, this);
+    this.scene.events.on(CollaborativeCanvas.Events.LOADREADY, this.initFromImageData, this);
+    this.scene.events.on(CollaborativeCanvas.Events.SAVECLICK, this.saveHandler, this);
   }
 
-  private dbLoadFailEventHandler() {
-    this.initBlankCanvas();
+  private initFromImageData(imageData: ImageData) {
+    this.canvasSource.putData(imageData, 0, 0);
+    this.canvasSource.update();
+    this.canvasSource.refresh();
+    this.imageData = this.canvasSource.imageData;
+    this.canvasBuffer = this.canvasSource.buffer;
+    this.canvasSprite = this.scene.add.image(this.canvasWidth/2,this.canvasHeight/2,this.key);
   }
 
   private initBlankCanvas() {
+    this.imageData = this.canvasSource.imageData;
+    this.canvasBuffer = this.canvasSource.buffer;
+
     let data : ImageData = this.imageData;
     let view : DataView = new DataView(this.canvasBuffer);
     for (let i = 0; i < data.width; i++) {
@@ -63,6 +67,9 @@ export class PixelCanvas {
         view.setInt32(index,0xFFFFFFFF);
       }
     }
+    this.canvasSource.putData(this.imageData, 0, 0);
+    this.canvasSource.refresh();
+    this.canvasSprite = this.scene.add.image(this.canvasWidth/2,this.canvasHeight/2,this.key);
   }
 
   public update(time: number, delta: number) {
@@ -84,6 +91,10 @@ export class PixelCanvas {
     else {
       return false;
     }
+  }
+
+  private saveHandler(saveSlot: number) {
+    this.scene.events.emit(CollaborativeCanvas.Events.SAVEREQUEST, this.imageData, saveSlot);
   }
 
   private canvasClickHandler(config: CanvasClickEvent) {
