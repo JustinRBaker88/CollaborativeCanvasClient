@@ -33,7 +33,7 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "idb": "^4.0.4",
+    "idb-keyval": "^3.2.0",
     "phaser": "^3.18.1"
   }
 }
