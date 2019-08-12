@@ -1,5 +1,3 @@
-import "phaser";
-
 export class CameraDragController {
   targetCamera: Phaser.Cameras.Scene2D.Camera;
   scene: Phaser.Scene;
