@@ -27,10 +27,13 @@
   "devDependencies": {
     "live-server": "^1.2.1",
     "npm-run-all": "^4.1.5",
-    "phaser": "^3.18.1",
     "ts-loader": "^5.4.5",
     "typescript": "^3.5.3",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5"
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "idb-keyval": "^3.2.0",
+    "phaser": "^3.18.1"
   }
 }

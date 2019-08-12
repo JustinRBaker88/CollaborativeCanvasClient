@@ -1,6 +1,8 @@
 import "phaser";
 import { ColorMap } from '../util/Colors';
 import { SelectionTile } from './selectionTile';
+import { CanvasClickEvent } from "../controllerobjects/canvasClickController";
+import { CollaborativeCanvas } from '../util/enums';
 
 export class PixelCanvas {
 
@@ -15,35 +17,49 @@ export class PixelCanvas {
 
   private canvasSprite : Phaser.GameObjects.Image;
 
-  private timeSinceCanvasUpdate : number = 0;
   private dirty : boolean = false;
 
-  private canvasWidth : number = 1000;
-  private canvasHeight : number = 1000;
+  private canvasWidth : number;
+  private canvasHeight : number;
 
 
   constructor(scene: Phaser.Scene, width: number, height: number, selectionTile : SelectionTile) {
     this.scene = scene;
     this.canvasSource = this.scene.textures.createCanvas(this.key, width, height);
-  
+
     this.canvasWidth = width;
     this.canvasHeight = height;
     this.selectionTile = selectionTile;
 
-    this.canvasBuffer = this.canvasSource.buffer;
-    this.imageData = this.canvasSource.imageData;
+    this.initEventHandlers();
 
-    this.initBlankCanvas();
-    this.canvasSource.putData(this.imageData, 0, 0);
-    this.canvasSource.refresh();
-    this.canvasSprite = this.scene.add.image(width/2,height/2,this.key);
+    this.scene.events.emit(CollaborativeCanvas.Events.CANVASREADY);
 
-    this.scene.input.on("pointerup", this.pointerUpHandler, this);
     
   }
 
+  private initEventHandlers() {
+    this.scene.events.on(CollaborativeCanvas.Events.CANVASCLICKED, this.canvasClickHandler, this);
+    this.scene.events.on(CollaborativeCanvas.Events.DBUNSUPPORTED, this.initBlankCanvas, this);
+    this.scene.events.on(CollaborativeCanvas.Events.LOADFAIL, this.initBlankCanvas, this);
+    this.scene.events.on(CollaborativeCanvas.Events.LOADREADY, this.initFromImageData, this);
+    this.scene.events.on(CollaborativeCanvas.Events.SAVECLICK, this.saveHandler, this);
+  }
+
+  private initFromImageData(imageData: ImageData) {
+    this.canvasSource.putData(imageData, 0, 0);
+    this.canvasSource.update();
+    this.canvasSource.refresh();
+    this.imageData = this.canvasSource.imageData;
+    this.canvasBuffer = this.canvasSource.buffer;
+    this.canvasSprite = this.scene.add.image(this.canvasWidth/2,this.canvasHeight/2,this.key);
+  }
+
   private initBlankCanvas() {
-    let data = this.imageData;
+    this.imageData = this.canvasSource.imageData;
+    this.canvasBuffer = this.canvasSource.buffer;
+
+    let data : ImageData = this.imageData;
     let view : DataView = new DataView(this.canvasBuffer);
     for (let i = 0; i < data.width; i++) {
       for (let j = 0; j < data.height; j++) {
@@ -51,6 +67,9 @@ export class PixelCanvas {
         view.setInt32(index,0xFFFFFFFF);
       }
     }
+    this.canvasSource.putData(this.imageData, 0, 0);
+    this.canvasSource.refresh();
+    this.canvasSprite = this.scene.add.image(this.canvasWidth/2,this.canvasHeight/2,this.key);
   }
 
   public update(time: number, delta: number) {
@@ -59,11 +78,9 @@ export class PixelCanvas {
       this.canvasSource.putData(this.imageData,0,0);
       this.canvasSource.refresh();
     }
-
   }
 
   public setPixel(color: number, x : number, y: number) {
-    console.log("In set pixel function");
     if (x < this.canvasWidth && y < this.canvasHeight && x >= 0 && y >= 0) {
       let baseIndex = y*this.canvasWidth*4 + x*4;
       let view : DataView = new DataView(this.canvasBuffer);
@@ -76,23 +93,16 @@ export class PixelCanvas {
     }
   }
 
-  private pointerUpHandler(pointer : Phaser.Input.Pointer) {
+  private saveHandler(saveSlot: number) {
+    this.scene.events.emit(CollaborativeCanvas.Events.SAVEREQUEST, this.imageData, saveSlot);
+  }
 
-    let camera = this.scene.cameras.main;    
-  
-    if (pointer.getDuration() < 100) {
-
-      let coordinates : Phaser.Math.Vector2 = new Phaser.Math.Vector2(); 
-      pointer.positionToCamera(camera, coordinates);
-      const x: number = Math.floor(pointer.worldX);
-      const y: number = Math.floor(pointer.worldY);
-
-      if (x < this.canvasWidth && y < this.canvasHeight && x >= 0 && y >= 0) {
-        if (this.selectionTile.isEnabled()) {
-          this.setPixel(this.selectionTile.getRGBA(), x, y);
-          console.log(this.canvasSource.getPixel(x,y));
-        }
-      }
+  private canvasClickHandler(config: CanvasClickEvent) {
+    if (config.x < this.canvasWidth && config.y < this.canvasHeight && config.x >= 0 && config.y >= 0) {
+      let rgba = config.color;
+      rgba = rgba << 8;
+      rgba = rgba | 0xFF;
+      this.setPixel(rgba, config.x, config.y);
     }
   }
 };
