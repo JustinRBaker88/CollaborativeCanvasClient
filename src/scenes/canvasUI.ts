@@ -1,4 +1,3 @@
-import "phaser";
 import { CollaborativeCanvas } from '../util/enums';
 
 export class CanvasUI extends Phaser.Scene  {

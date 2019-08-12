@@ -1,4 +1,4 @@
-import "phaser";
+import "Phaser";
 
 import { Canvas } from './scenes/canvas';
 import { CanvasUI } from './scenes/canvasUI';

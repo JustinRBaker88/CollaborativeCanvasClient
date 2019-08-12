@@ -1,5 +1,3 @@
-import "phaser";
-
 export class CameraUtil {
 
   static readonly MINWIDTH = 1;

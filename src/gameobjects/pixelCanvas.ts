@@ -1,5 +1,3 @@
-import "phaser";
-import { ColorMap } from '../util/Colors';
 import { SelectionTile } from './selectionTile';
 import { CanvasClickEvent } from "../controllerobjects/canvasClickController";
 import { CollaborativeCanvas } from '../util/enums';

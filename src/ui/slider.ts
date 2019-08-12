@@ -1,5 +1,3 @@
-import "phaser";
-
 export class Slider extends Phaser.GameObjects.Container  {
 
   sliderBar : Phaser.GameObjects.Rectangle; 

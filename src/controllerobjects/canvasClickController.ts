@@ -1,4 +1,3 @@
-import "phaser";
 import { SelectionTile } from '../gameobjects/selectionTile';
 import { CollaborativeCanvas } from "../util/enums";
 

@@ -1,4 +1,3 @@
-import "phaser";
 import { ColorMap } from '../util/Colors';
 import { CollaborativeCanvas } from "../util/enums";
 
