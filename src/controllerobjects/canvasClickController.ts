@@ -30,7 +30,7 @@ export class CanvasClickController {
 
   private pointerUpHandler(pointer : Phaser.Input.Pointer) { 
   
-    if (pointer.getDuration() < 75 && this.selectionTile.isEnabled()) {
+    if (pointer.getDuration() < 125 && this.selectionTile.isEnabled()) {
       
       let camera : Phaser.Cameras.Scene2D.Camera = this.scene.cameras.main;   
       let coordinates : Phaser.Math.Vector2 = new Phaser.Math.Vector2(); 
