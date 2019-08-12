@@ -1,12 +1,11 @@
-import "phaser";
-import { CameraUtil } from '../util/cameraUtil';
 import { CameraDragController } from '../controllerobjects/cameraDragController';
 import { CameraZoomController } from '../controllerobjects/cameraZoomController';
 import { SelectionTile } from '../gameobjects/selectionTile';
-import { randomColor } from '../util/Colors';
 import { PixelCanvas } from "../gameobjects/pixelCanvas";
 import { CanvasClickController } from '../controllerobjects/canvasClickController';
 import { CollaborativeCanvas } from '../util/enums';
+import { randomColor } from '../util/Colors';
+import { DatabaseManager } from '../util/databaseManager';
 
 export class Canvas extends Phaser.Scene {
 
@@ -19,10 +18,8 @@ export class Canvas extends Phaser.Scene {
   private selectionTile : SelectionTile;
 
   private pixelCanvas : PixelCanvas;
-  private database : IDBDatabase;
+  private dbManager : DatabaseManager;
 
-  private canvasDBName : string = "CanvasDB";
-  private dbVersion : number = 1;
 
   private readonly CANVASWIDTH : number = 1000;
   private readonly CANVASHEIGHT : number = 1000;
@@ -45,11 +42,10 @@ export class Canvas extends Phaser.Scene {
   create(startData: Object ): void {
     this.selectionTile = new SelectionTile(this, this.input.activePointer, randomColor());
     this.pixelCanvas = new PixelCanvas(this, this.CANVASWIDTH, this.CANVASHEIGHT, this.selectionTile);
-
-    this.initDB();
+    this.dbManager = new DatabaseManager(this);
+    this.dbManager.loadImageData(1);
 
     this.initCamera();
-    this.initEvents();
 
     this.cameraDragController = new CameraDragController(this.mCamera, this);
     this.cameraZoomController = new CameraZoomController(this.mCamera, this);
@@ -66,26 +62,6 @@ export class Canvas extends Phaser.Scene {
     this.pixelCanvas.update(time,delta);
   }
 
-  public getSelectionTile() : SelectionTile {
-    return this.selectionTile;
-  }
-
-  private initEvents() : void {
-    
-  }
-
-  private initDB() : void {
-    let dbFactory : IDBFactory = window.indexedDB;
-    if (dbFactory != null) {
-      let dbOpenRequest : IDBOpenDBRequest = dbFactory.open(this.canvasDBName, this.dbVersion);
-    }
-    else {
-      this.events.emit(CollaborativeCanvas.Events.DBUNSUPPORTED);
-    }
-    
-
-
-  }
 
   private initCamera() : void {
     this.mCamera = this.cameras.main;
