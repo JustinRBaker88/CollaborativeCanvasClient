@@ -17,6 +17,12 @@ enum Events {
   
 }
 
+enum Scenes {
+  CANVAS = "Canvas",
+  CANVASUI = "CanvasUI"
+
+}
+
 export const CollaborativeCanvas  = { 
-  Events
+  Events, Scenes
 };
