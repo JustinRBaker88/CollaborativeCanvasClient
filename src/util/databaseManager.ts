@@ -1,6 +1,5 @@
 import { CollaborativeCanvas } from './enums';
 import { get, set, clear, del}  from 'idb-keyval';
-import { CollabCanvas } from '../app';
 
 export class DatabaseManager {
   private scene : Phaser.Scene;

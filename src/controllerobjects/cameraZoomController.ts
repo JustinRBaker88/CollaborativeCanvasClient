@@ -4,7 +4,7 @@ export class CameraZoomController {
   targetCamera: Phaser.Cameras.Scene2D.Camera;
   scene: Phaser.Scene;
 
-  zoomPercent : number = .1;
+  zoomPercent : number = .26252071;
 
   minZoom: number = .5;
   maxZoom: number = 100;
