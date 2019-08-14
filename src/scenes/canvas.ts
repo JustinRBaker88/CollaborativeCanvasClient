@@ -27,12 +27,12 @@ export class Canvas extends Phaser.Scene {
 
   constructor() {
     super({
-      key: "Canvas"
+      key: CollaborativeCanvas.Scenes.CANVAS
     });
   }
 
   init(startData : Object): void {
-    this.scene.launch("CanvasUI");
+    this.scene.launch(CollaborativeCanvas.Scenes.CANVASUI);
   }
 
 
@@ -52,8 +52,7 @@ export class Canvas extends Phaser.Scene {
     this.canvasClickController = new CanvasClickController(this, this.selectionTile);
 
     this.input.keyboard.on('keyup-' + 'SPACE', function (event) { this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2); }, this);
-    
-
+    this.events.on(CollaborativeCanvas.Events.CAMERAZOOMED, this.cameraBoundsHandler, this);
   }
 
   update(time: number, delta: number): void {
@@ -62,11 +61,25 @@ export class Canvas extends Phaser.Scene {
     this.pixelCanvas.update(time,delta);
   }
 
+  private cameraBoundsHandler() {
+    let zoom = this.mCamera.zoom;
+    
+    // camera bounds x & y are half the camera world width/height above/to the left of the 0,0 coordinate
+    let leftBound = (this.mCamera.width)/(-2*zoom);
+    let topBound = (this.mCamera.height)/(-2*zoom);
+
+    // camera bounds width & height are the width & height of the canvas + pixels width & height of the camera
+    let width = (leftBound*-2) + this.CANVASWIDTH;
+    let height = (topBound*-2) + this.CANVASHEIGHT;
+
+    this.mCamera.setBounds(leftBound,topBound,width,height);
+  }
+
 
   private initCamera() : void {
     this.mCamera = this.cameras.main;
     this.mCamera.centerOn(this.CANVASWIDTH/2,this.CANVASHEIGHT/2);
-    
+    this.cameraBoundsHandler();
   }
 
 };
