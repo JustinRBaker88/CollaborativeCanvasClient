@@ -17,7 +17,7 @@ export class CanvasUI extends Phaser.Scene  {
   }
 
   preload(): void {
-    this.load.html('colorSelector', 'static/ColorSelector.html');
+    this.load.html('colorSelector', 'static/colorSelector.html');
     this.load.html('saveButton', 'static/saveButton.html');
   }
 

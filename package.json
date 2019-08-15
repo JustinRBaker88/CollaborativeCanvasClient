@@ -4,10 +4,10 @@
   "description": "Messing around with Phaser 3 & TypeScript",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js --watch",
     "host": "live-server --port=8085",
-    "start": "npm-run-all build --parallel watch host"
+    "start": "npm-run-all --parallel host watch"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/JustinRBaker88/Phaser3-LearningRepo#readme",
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
     "live-server": "^1.2.1",
     "npm-run-all": "^4.1.5",
     "ts-loader": "^5.4.5",
